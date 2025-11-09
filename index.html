@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حصة قرآنية - للمعلمين</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fdf6e3;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #4a90e2;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 1.5em;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .lesson-list {
+      padding: 10px;
+    }
+
+    .lesson {
+      background-color: white;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lesson label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .lesson input, .lesson select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 1em;
+    }
+
+    .lesson select {
+      cursor: pointer;
+    }
+
+    @media (max-width: 400px) {
+      header {
+        font-size: 1.2em;
+        padding: 12px 0;
+      }
+      .lesson input, .lesson select {
+        font-size: 0.9em;
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>حصة قرآنية - للمعلمين</header>
+
+  <div class="lesson-list">
+    <div class="lesson">
+      <label>اسم الطالب:</label>
+      <input type="text" placeholder="ادخل الاسم">
+
+      <label>السورة:</label>
+      <input type="text" placeholder="ادخل اسم السورة">
+
+      <label>الصفحة والآية:</label>
+      <input type="text" placeholder="مثال: 5:1">
+
+      <label>التقييم:</label>
+      <select>
+        <option>جيد</option>
+        <option>حسن</option>
+        <option>جيد جداً</option>
+        <option>ممتاز</option>
+      </select>
+    </div>
+
+    <div class="lesson">
+      <label>اسم الطالب:</label>
+      <input type="text" placeholder="ادخل الاسم">
+
+      <label>السورة:</label>
+      <input type="text" placeholder="ادخل اسم السورة">
+
+      <label>الصفحة والآية:</label>
+      <input type="text" placeholder="مثال: 5:1">
+
+      <label>التقييم:</label>
+      <select>
+        <option>جيد</option>
+        <option>حسن</option>
+        <option>جيد جداً</option>
+        <option>ممتاز</option>
+      </select>
+    </div>
+  </div>
+</body>
+</html>
