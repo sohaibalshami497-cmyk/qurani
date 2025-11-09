@@ -22,6 +22,27 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
+    .controls {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      flex-wrap: wrap;
+      gap: 5px;
+      background-color: #e6f0fa;
+    }
+
+    .controls button {
+      flex: 1;
+      min-width: 80px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4a90e2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .lesson-list {
       padding: 10px;
     }
@@ -63,50 +84,97 @@
         font-size: 0.9em;
         padding: 6px;
       }
+      .controls button {
+        font-size: 0.9em;
+        padding: 6px;
+      }
     }
   </style>
 </head>
 <body>
   <header>حصة قرآنية - للمعلمين</header>
 
-  <div class="lesson-list">
-    <div class="lesson">
-      <label>اسم الطالب:</label>
-      <input type="text" placeholder="ادخل الاسم">
-
-      <label>السورة:</label>
-      <input type="text" placeholder="ادخل اسم السورة">
-
-      <label>الصفحة والآية:</label>
-      <input type="text" placeholder="مثال: 5:1">
-
-      <label>التقييم:</label>
-      <select>
-        <option>جيد</option>
-        <option>حسن</option>
-        <option>جيد جداً</option>
-        <option>ممتاز</option>
-      </select>
-    </div>
-
-    <div class="lesson">
-      <label>اسم الطالب:</label>
-      <input type="text" placeholder="ادخل الاسم">
-
-      <label>السورة:</label>
-      <input type="text" placeholder="ادخل اسم السورة">
-
-      <label>الصفحة والآية:</label>
-      <input type="text" placeholder="مثال: 5:1">
-
-      <label>التقييم:</label>
-      <select>
-        <option>جيد</option>
-        <option>حسن</option>
-        <option>جيد جداً</option>
-        <option>ممتاز</option>
-      </select>
-    </div>
+  <div class="controls">
+    <button onclick="showAll()">الكل</button>
+    <button onclick="filterDate('day')">اليوم</button>
+    <button onclick="filterDate('week')">هذا الأسبوع</button>
+    <button onclick="filterDate('month')">هذا الشهر</button>
+    <button onclick="addLesson()">إضافة طالب</button>
   </div>
+
+  <div class="lesson-list" id="lessonList"></div>
+
+  <script>
+    const grades = ["جيد", "حسن", "جيد جداً", "ممتاز"];
+    let lessons = JSON.parse(localStorage.getItem("lessons") || "[]");
+
+    function saveLessons() {
+      localStorage.setItem("lessons", JSON.stringify(lessons));
+      renderLessons();
+    }
+
+    function addLesson() {
+      const name = prompt("ادخل اسم الطالب:");
+      const sura = prompt("ادخل اسم السورة:");
+      const pageVerse = prompt("ادخل الصفحة والآية (مثال: 5:1):");
+      const grade = prompt("اختر التقييم: جيد / حسن / جيد جداً / ممتاز", "جيد");
+      const date = new Date().toISOString().split('T')[0];
+
+      if (name && sura && pageVerse && grades.includes(grade)) {
+        lessons.push({name, sura, pageVerse, grade, date});
+        saveLessons();
+      } else {
+        alert("بيانات غير صحيحة! تأكد من كل الحقول.");
+      }
+    }
+
+    function renderLessons(filtered = null) {
+      const list = document.getElementById("lessonList");
+      list.innerHTML = "";
+      const toRender = filtered || lessons;
+
+      toRender.forEach(lesson => {
+        const div = document.createElement("div");
+        div.className = "lesson";
+        div.innerHTML = `
+          <label>اسم الطالب:</label>
+          <input type="text" value="${lesson.name}" disabled>
+          <label>السورة:</label>
+          <input type="text" value="${lesson.sura}" disabled>
+          <label>الصفحة والآية:</label>
+          <input type="text" value="${lesson.pageVerse}" disabled>
+          <label>التقييم:</label>
+          <input type="text" value="${lesson.grade}" disabled>
+          <label>التاريخ:</label>
+          <input type="text" value="${lesson.date}" disabled>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function showAll() {
+      renderLessons();
+    }
+
+    function filterDate(type) {
+      const now = new Date();
+      const filtered = lessons.filter(lesson => {
+        const lessonDate = new Date(lesson.date);
+        if(type === 'day') {
+          return lessonDate.toDateString() === now.toDateString();
+        } else if(type === 'week') {
+          const start = new Date(now.setDate(now.getDate() - now.getDay()));
+          const end = new Date(start);
+          end.setDate(start.getDate() + 6);
+          return lessonDate >= start && lessonDate <= end;
+        } else if(type === 'month') {
+          return lessonDate.getMonth() === now.getMonth() && lessonDate.getFullYear() === now.getFullYear();
+        }
+      });
+      renderLessons(filtered);
+    }
+
+    renderLessons();
+  </script>
 </body>
 </html>
